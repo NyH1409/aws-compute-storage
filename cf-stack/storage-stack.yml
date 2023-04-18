@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Compute stack Test
+
+Resources:
+  BucketS3:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: STD21034
+
+  BucketSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Join [ '', [ /test/, /s3/bucket-name] ]
+      Type: String
+      Value: !GetAtt BucketS3.Arn

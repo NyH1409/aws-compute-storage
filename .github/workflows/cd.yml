@@ -1,0 +1,49 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - '*'
+
+  workflow_dispatch:
+
+jobs:
+  cd-compute:
+    if: github.ref_name == 'dev'
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Install aws-cli
+        uses: unfor19/install-aws-cli-action@v1.0.3
+        with:
+          version: 2
+          verbose: false
+          arch: amd64
+          rootdir: ''
+          workdir: ''
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@13d241b293754004c80624b5567555c4a39ffbe3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy storage stack
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          template: cf-stacks/storage-stack.yml
+          tags: "[ { \"Key\": \"app\", \"Value\": \"test\" }, { \"Key\": \"env\", \"Value\": \"dev\" } ]"
+          capabilities: CAPABILITY_NAMED_IAM
+          no-fail-on-empty-changeset: "1"
