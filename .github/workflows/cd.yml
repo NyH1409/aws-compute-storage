@@ -44,7 +44,7 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name: test-storage
-          template: cf-stacks/storage-stack.yml
+          template: cf-stack/storage-stack.yml
           tags: "[ { \"Key\": \"app\", \"Value\": \"test\" }, { \"Key\": \"env\", \"Value\": \"dev\" } ]"
           capabilities: CAPABILITY_NAMED_IAM
           no-fail-on-empty-changeset: "1"
