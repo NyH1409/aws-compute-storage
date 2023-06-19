@@ -6,7 +6,7 @@ Resources:
     Type: AWS::S3::Bucket
     DeletionPolicy: Retain
     Properties:
-      BucketName: STD21034
+      BucketName: nyhasina-storage
 
   BucketSSM:
     Type: AWS::SSM::Parameter
