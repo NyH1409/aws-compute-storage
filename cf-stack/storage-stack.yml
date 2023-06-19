@@ -11,6 +11,6 @@ Resources:
   BucketSSM:
     Type: AWS::SSM::Parameter
     Properties:
-      Name: !Join [ '', [ /test/, /s3/bucket-name] ]
+      Name: !Join [ '', [ /test, /s3/bucket-name] ]
       Type: String
       Value: !GetAtt BucketS3.Arn
